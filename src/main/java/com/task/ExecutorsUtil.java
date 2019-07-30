@@ -9,7 +9,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import com.memory.MemoryErrorUtil;
 import com.memory.MemoryUtil;
+import com.template.SqlTemplate;
+import com.util.CsvUtil;
 import com.vo.ResultVO;
 
 /**
@@ -32,7 +35,7 @@ public class ExecutorsUtil {
 	
 	
 	
-	public static void init() {
+	public static void start() {
 		// 处理数据线程持
 		exe = Executors.newFixedThreadPool(4);
 		
@@ -44,15 +47,16 @@ public class ExecutorsUtil {
 				// 处理数据队列
 				BlockingQueue<Map<Long, List<String[]>>> dataQueue = MemoryUtil.instance.dataQueue;
 				if (dataQueue != null && dataQueue.size() > 0) {
-					dataQueue.stream().forEach(n -> {
-						for (Map.Entry<Long, List<String[]>> entry: n.entrySet()) {
+					while (dataQueue.size() > 0) {
+						Map<Long, List<String[]>> map = dataQueue.poll();
+						for (Map.Entry<Long, List<String[]>> entry: map.entrySet()) {
 							List<String[]> value = entry.getValue();
 							Long key = entry.getKey();
 							FutureTask<ResultVO<?>> futureTask = new FutureTask<>(new DealDataTask(value, key));
 							listFuture.add(futureTask);
 							exe.submit(futureTask);
 						}
-					});
+					}
 				}
 				
 				// 判断线程池是否执行完
@@ -60,6 +64,9 @@ public class ExecutorsUtil {
 				
 				// 关闭线程池
 				exe.shutdown();
+				
+				// 处理错误数据
+				dealErrorData();
 			}
 		}).start();
 	}
@@ -101,5 +108,19 @@ public class ExecutorsUtil {
                 }
             }
         }
+	}
+	
+	private static void dealErrorData() {
+		// 处理错误数据队列
+		BlockingQueue<String[]> dataErrorQueue = MemoryErrorUtil.instance.dataErrorQueue;
+		if (dataErrorQueue != null && dataErrorQueue.size() > 0) {
+			List<String[]> errorData = new ArrayList<>();
+			// 生成错误csv文件
+			while (dataErrorQueue.size() > 0) {
+				errorData.add(dataErrorQueue.poll());
+			}
+			CsvUtil.generatorCsv(errorData, SqlTemplate.tableName + "Error" + ".csv", SqlTemplate.sqlColumns);
+			System.out.println("生成CSV文件成功");
+		}
 	}
 }

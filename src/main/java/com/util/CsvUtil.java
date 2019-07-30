@@ -2,9 +2,16 @@ package com.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.filechooser.FileSystemView;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 import com.csvreader.CsvReader;
 import com.memory.MemoryUtil;
@@ -96,5 +103,35 @@ public class CsvUtil {
             throw new RuntimeException(e.getMessage());
         } 
 
+    }
+    
+    /**
+     * 
+    * @Title: generatorCsv
+    * @Description: 生成文件
+    * @param errorData
+    * @createdBy:Thread
+    * @createaAt:2019年7月30日下午11:28:49
+     */
+    public static void generatorCsv(List<String[]> errorData, String fileName, String[] headers) {
+    	try{
+    		File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
+    		String path = desktopDir.getAbsolutePath() + "\\" +  fileName;
+    		
+	    	FileOutputStream fos = new FileOutputStream(path);
+	        OutputStreamWriter osw = new OutputStreamWriter(fos, "GBK");
+	
+	        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(headers);
+	        CSVPrinter csvPrinter = new CSVPrinter(osw, csvFormat);
+	
+	        for (String[] data : errorData){
+	        	csvPrinter.printRecord(data);
+			}
+	
+	        csvPrinter.flush();
+	        csvPrinter.close();
+    	} catch (IOException e){
+    		e.printStackTrace();
+    	}
     }
 }

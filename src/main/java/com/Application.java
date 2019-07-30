@@ -17,8 +17,8 @@ public class Application {
 		// 读取测试数据
 		CsvUtil.readCSV(Application.class.getClassLoader().getResource("test.csv").getPath(), 1000);
 	
-		// 初始化线程池
-		ExecutorsUtil.init();
+		// 线程池
+		ExecutorsUtil.start();
 		
 		System.out.println("生成完成");
 	}

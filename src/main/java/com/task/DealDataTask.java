@@ -36,6 +36,9 @@ public class DealDataTask implements Callable<ResultVO<?>> {
 	public ResultVO<?> call() {
 		String[] headers = SqlTemplate.sqlColumns;
 		// 拼接SQL语句
+		
+		 // 测试错误数据
+//		int i = 1;
 		for (String[] stringArray : listData) {
 			try{
 				StringBuilder sb = new StringBuilder();
@@ -48,12 +51,19 @@ public class DealDataTask implements Callable<ResultVO<?>> {
 	            for (String content : stringArray) {
 	            	sb.append("\"").append(content).append("\"").append(",");
 	            }
-              sb = sb.replace(sb.length() - 1, sb.length(), "");
-              sb.append(");");
-              System.out.println(sb.toString());
+                sb = sb.replace(sb.length() - 1, sb.length(), "");
+                sb.append(");");
+              
+//                // 测试错误数据
+//                if (i % 2 == 1) {
+//	                int a = 1/0;
+//                }
+               
+                System.out.println(sb.toString());
 			} catch (Exception e){
 				MemoryErrorUtil.instance.addDataQueue(stringArray);
 			}
+//			i++;
 		}
 		return ResultVOUtil.success();
 	}
