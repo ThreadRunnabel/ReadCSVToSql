@@ -1,13 +1,24 @@
 package com.template;
 
+import com.util.Constants;
+
 /**
  * *********************************
 * @ClassName: SqlTemplate.java
-* @Description: SqlÓï¾äÄ£°å
+* @Description: SQLè¯­å¥æ¨¡æ¿
 * @author: Thread
-* @createdAt: 2019Äê7ÔÂ30ÈÕÏÂÎç5:15:03
+* @createdAt: 2019å¹´7æœˆ30æ—¥ä¸‹åˆ10:24:32
 **********************************
  */
 public class SqlTemplate {
 	
+	/*
+	 * è¡¨å
+	 */
+	public static String tableName = Constants.NULLSTRING;
+	
+	/*
+	 * SQLå­—æ®µ
+	 */
+	public static String[] sqlColumns;
 }

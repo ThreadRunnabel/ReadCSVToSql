@@ -1,10 +1,6 @@
 package com.memory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -15,13 +11,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 * @createdAt: 2019年7月30日下午6:34:50
 **********************************
  */
-public enum MemoryUtil {
+public enum MemoryErrorUtil {
 	instance;
 	
 	/*
 	 * 需要处理的数据
 	 */
-	public BlockingQueue<Map<Long, List<String[]>>> dataQueue = new LinkedBlockingQueue<>();
+	public BlockingQueue<String[]> dataErrorQueue = new LinkedBlockingQueue<>();
 	
 	
 	/**
@@ -33,9 +29,7 @@ public enum MemoryUtil {
 	* @createdBy:Thread
 	* @createaAt:2019年7月30日下午6:43:22
 	 */
-	public void addDataQueue(Long i, List<String[]> data) {
-		Map<Long, List<String[]>> map = new ConcurrentHashMap<>();
-		map.put(i, new ArrayList<String[]>(data));
-		this.dataQueue.offer(map);
+	public void addDataQueue(String[] error) {
+		dataErrorQueue.offer(error);
 	}
 }

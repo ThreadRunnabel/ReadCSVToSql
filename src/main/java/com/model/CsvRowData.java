@@ -1,13 +1,39 @@
 package com.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
  * *********************************
 * @ClassName: CsvRowData.java
-* @Description: ¶ÁÈ¡CSVÎÄ¼şÊı¾İ×ª»»ÎªÊµÌå¶ÔÏó
+* @Description: CSVæ•°æ®å¯¹è±¡
 * @author: Thread
-* @createdAt: 2019Äê7ÔÂ30ÈÕÏÂÎç5:14:27
+* @createdAt: 2019å¹´7æœˆ30æ—¥ä¸‹åˆ6:15:55
 **********************************
  */
+@Data
+@AllArgsConstructor
 public class CsvRowData {
+	/*
+	 * æ•°æ®id
+	 */
+	private Long id;
+	/*
+	 * ç”¨æˆ·å
+	 */
+	private String name;
+	/*
+	 * è®¿é—®åœ°å€
+	 */
+	private String url;
+	/*
+	 * æè¿°
+	 */
+	private String describe;
+	/*
+	 * æƒé™id
+	 */
+	private Long auth;
+	
 	
 }
