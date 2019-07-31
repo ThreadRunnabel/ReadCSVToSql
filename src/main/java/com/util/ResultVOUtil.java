@@ -1,4 +1,6 @@
-package com.vo;
+package com.util;
+
+import com.vo.ResultVO;
 
 /**
  * *********************************

@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 
 import com.memory.MemoryErrorUtil;
 import com.template.SqlTemplate;
+import com.util.ResultVOUtil;
 import com.vo.ResultVO;
-import com.vo.ResultVOUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
