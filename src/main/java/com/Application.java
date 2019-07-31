@@ -14,8 +14,14 @@ import com.util.CsvUtil;
 public class Application {
 	
 	public static void main(String[] args) {
+		// args[0] 是资源目录下的文件名
+		if (args.length == 0) {
+			args = new String[1];
+			args[0] = "test.csv";
+		}
+		
 		// 读取测试数据
-		CsvUtil.readCSV(Application.class.getClassLoader().getResource("test.csv").getPath(), 5000);
+		CsvUtil.readCSV(Application.class.getClassLoader().getResource(args[0]).getPath(), 5000);
 		
 		// 线程池
 		ExecutorsUtil.start();
