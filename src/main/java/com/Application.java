@@ -15,7 +15,7 @@ public class Application {
 	
 	public static void main(String[] args) {
 		// 读取测试数据
-		CsvUtil.readCSV(Application.class.getClassLoader().getResource("test.csv").getPath(), 1000);
+		CsvUtil.readCSV(Application.class.getClassLoader().getResource("test.csv").getPath(), 10);
 	
 		// 线程池
 		ExecutorsUtil.start();
