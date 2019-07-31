@@ -32,21 +32,18 @@ public class CsvUtil {
 	* @Title: readCSV
 	* @Description: 读取文件
 	* @param readPath 文件路径
-    * @param rowCount 每一次批次条数
+    * @param rowCount 每一批次条数
 	* @return
 	* @author: Thread
 	* @createdAt: 2019年7月30日下午6:05:54
 	 */
     public static Boolean readCSV(String readPath, int rowCount) {
-        String filePath = readPath;
-        
-        
         // 正确数据数组
         List<String[]> listData = new ArrayList<>();
         
         try {
         	// 获取表名
-        	File file = new File(filePath);
+        	File file = new File(readPath);
         	String name = file.getName();
         	if (StringUtil.isNotBlank(name)) {
         		String[] tableName = name.split("\\.");
@@ -54,8 +51,7 @@ public class CsvUtil {
         	}
         	
         	// 拿到文件操作对象
-        	filePath = readPath;
-            CsvReader csvReader = new CsvReader(filePath);
+            CsvReader csvReader = new CsvReader(readPath);
             
             // 读取表头
             boolean readHeaders = csvReader.readHeaders();
@@ -88,6 +84,7 @@ public class CsvUtil {
             	listData.add(data);
             }
             
+            // 处理剩余的数据
             if (listData.size() > 0) {
         		// 存放进缓存
         		MemoryUtil.instance.addDataQueue(success, listData);
@@ -115,15 +112,18 @@ public class CsvUtil {
      */
     public static void generatorCsv(List<String[]> errorData, String fileName, String[] headers) {
     	try{
+    		// 拿到桌面地址
     		File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
     		String path = desktopDir.getAbsolutePath() + "\\" +  fileName;
     		
 	    	FileOutputStream fos = new FileOutputStream(path);
 	        OutputStreamWriter osw = new OutputStreamWriter(fos, "GBK");
 	
+	        // 设置CSV头部和输出流
 	        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(headers);
 	        CSVPrinter csvPrinter = new CSVPrinter(osw, csvFormat);
 	
+	        // 填充记录输出
 	        for (String[] data : errorData){
 	        	csvPrinter.printRecord(data);
 			}
